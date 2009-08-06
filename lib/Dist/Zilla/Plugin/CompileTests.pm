@@ -7,7 +7,7 @@
 # the same terms as the Perl 5 programming language system itself.
 # 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '0.1.0';
+our $VERSION = '0.1.1';
 
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -31,7 +31,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 0.1.0
+version 0.1.1
 
 =head1 SYNOPSIS
 

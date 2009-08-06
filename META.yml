@@ -17,4 +17,4 @@ requires:
 resources:
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-CompileTests
   repository: http://github.com/jquelin/dist-zilla-plugin-compiletests
-version: 0.1.0
+version: 0.1.1

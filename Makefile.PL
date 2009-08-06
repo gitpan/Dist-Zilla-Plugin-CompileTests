@@ -9,7 +9,7 @@ WriteMakefile(
   NAME      => 'Dist::Zilla::Plugin::CompileTests',
   AUTHOR    => 'Jerome\ Quelin',
   ABSTRACT  => 'common\ tests\ to\ check\ syntax\ of\ your\ modules',
-  VERSION   => '0.1.0',
+  VERSION   => '0.1.1',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {
