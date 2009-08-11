@@ -7,17 +7,19 @@
 # the same terms as the Perl 5 programming language system itself.
 # 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '0.1.2';
+our $VERSION = '0.1.3';
 
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
 extends 'Dist::Zilla::Plugin::InlineFiles';
+with    'Dist::Zilla::Role::FixedPrereqs';
+
+sub prereq { return { 'File::Find::Rule' => 0 }; }
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
-
 
 
 
@@ -31,7 +33,13 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 0.1.2
+version 0.1.3
+
+=begin Pod::Coverage
+
+prereq
+
+=end Pod::Coverage
 
 =head1 SYNOPSIS
 
