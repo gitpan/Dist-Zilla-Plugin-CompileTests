@@ -12,9 +12,16 @@ use strict;
 use warnings;
 
 use Test::More;
-use File::Find::Rule;
+use File::Find;
 
-my @modules = File::Find::Rule->relative->file->name('*.pm')->in('lib');
+my @modules;
+find(
+  sub {
+    return if $File::Find::name !~ /\.pm\z/;
+    push @modules, $File::Find::name;
+  },
+  'lib',
+);
 my @scripts = glob "bin/*";
 
 plan tests => scalar(@modules) + scalar(@scripts);

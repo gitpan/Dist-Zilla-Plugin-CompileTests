@@ -6,16 +6,16 @@
 # This is free software; you can redistribute it and/or modify it under
 # the same terms as the Perl 5 programming language system itself.
 # 
+use strict;
+use warnings;
+
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '0.1.3';
+our $VERSION = '1.092370';
 
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
 extends 'Dist::Zilla::Plugin::InlineFiles';
-with    'Dist::Zilla::Role::FixedPrereqs';
-
-sub prereq { return { 'File::Find::Rule' => 0 }; }
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
@@ -33,7 +33,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 0.1.3
+version 1.092370
 
 =begin Pod::Coverage
 
@@ -89,9 +89,16 @@ use strict;
 use warnings;
 
 use Test::More;
-use File::Find::Rule;
+use File::Find;
 
-my @modules = File::Find::Rule->relative->file->name('*.pm')->in('lib');
+my @modules;
+find(
+  sub {
+    return if $File::Find::name !~ /\.pm\z/;
+    push @modules, $File::Find::name;
+  },
+  'lib',
+);
 my @scripts = glob "bin/*";
 
 plan tests => scalar(@modules) + scalar(@scripts);
