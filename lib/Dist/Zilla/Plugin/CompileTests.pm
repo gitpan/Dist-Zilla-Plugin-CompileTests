@@ -10,7 +10,7 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '1.092370';
+our $VERSION = '1.092460';
 
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -33,7 +33,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.092370
+version 1.092460
 
 =begin Pod::Coverage
 
@@ -105,9 +105,10 @@ plan tests => scalar(@modules) + scalar(@scripts);
     
 foreach my $file ( @modules ) {
     my $module = $file;
-    $module =~ s/[\/\\]/::/g;
+    $module =~ s{^lib/}{};
+    $module =~ s{[/\\]}{::}g;
     $module =~ s/\.pm$//;
-    is( qx{ $^X -M$module -e "print '$module ok'" }, "$module ok", "$module loaded ok" );
+    is( qx{ $^X -Ilib -M$module -e "print '$module ok'" }, "$module ok", "$module loaded ok" );
 }
     
 SKIP: {

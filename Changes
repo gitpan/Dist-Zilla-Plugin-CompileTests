@@ -1,5 +1,8 @@
 Revision history for Dist::Zilla::Plugin::CompileTests
 
+1.092460  2009-09-03 15:25:21 UTC
+ - using less magical load test (as kentnl reported)
+
 1.092370 Tue Aug 25 16:57:16 2009
  - using plain File::Find which is core (rjbs)
  - moving to autoversion: 1.yydddn

@@ -2,7 +2,7 @@
 abstract: 'common tests to check syntax of your modules'
 author:
   - 'Jerome Quelin'
-generated_by: 'Dist::Zilla::Plugin::MetaYAML version 1.092310'
+generated_by: 'Dist::Zilla::Plugin::MetaYAML version 1.092400'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -11,7 +11,7 @@ name: Dist-Zilla-Plugin-CompileTests
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 1.092370
+    version: 1.092460
 requires:
   Dist::Zilla::Plugin::InlineFiles: 0
   English: 0
@@ -21,4 +21,4 @@ requires:
 resources:
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-CompileTests
   repository: http://github.com/jquelin/dist-zilla-plugin-compiletests
-version: 1.092370
+version: 1.092460
