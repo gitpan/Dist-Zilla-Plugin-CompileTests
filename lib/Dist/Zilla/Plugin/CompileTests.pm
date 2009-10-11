@@ -10,12 +10,40 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '1.092460';
+our $VERSION = '1.092840';
+
 
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
 extends 'Dist::Zilla::Plugin::InlineFiles';
+with    'Dist::Zilla::Role::FileMunger';
+
+
+# -- attributes
+
+# skiplist - a regex
+has skip => ( is=>'ro', predicate=>'has_skip' );
+
+
+# -- public methods
+
+# called by the filemunger role
+sub munge_file {
+    my ($self, $file) = @_;
+
+    return unless $file->name eq 't/00-compile.t';
+
+    my $replacement = ( $self->has_skip && $self->skip )
+        ? sprintf( 'next if $module =~ /%s/;', $self->skip )
+        : '# nothing to skip';
+
+    # replace the string in the file
+    my $content = $file->content;
+    $content =~ s/COMPILETESTS_SKIP/$replacement/;
+    $file->content( $content );
+}
+
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
@@ -33,11 +61,11 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.092460
+version 1.092840
 
 =begin Pod::Coverage
 
-prereq
+munge_file
 
 =end Pod::Coverage
 
@@ -46,6 +74,7 @@ prereq
 In your dist.ini:
 
     [CompileTests]
+    skip = Test$
 
 =head1 DESCRIPTION
 
@@ -56,13 +85,46 @@ the following files:
 
 =item * t/00-compile.t - a standard test to check syntax of bundled modules
 
-=back 
-
 This test will find all modules and scripts in your dist, and try to
 compile them one by one. This means it's a bit slower than loading them
 all at once, but it will catch more errors.
 
-This plugin does not accept any option.
+=back 
+
+This plugin accepts the following options:
+
+=over 4
+
+=item * skip: a regex to skip compile test for modules matching it. The
+match is done against the module name (C<Foo::Bar>), not the file path
+(F<lib/Foo/Bar.pm>).
+
+=back 
+
+=head1 SEE ALSO
+
+You can also look for information on this module at:
+
+=over 4
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/Dist-Zilla-Plugin-CompileTests>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/Dist-Zilla-Plugin-CompileTests>
+
+=item * Open bugs
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-CompileTests>
+
+=item * Git repository
+
+L<http://github.com/jquelin/dist-zilla-plugin-compiletests.git>.
+
+=back 
+
 
 
 
@@ -108,6 +170,7 @@ foreach my $file ( @modules ) {
     $module =~ s{^lib/}{};
     $module =~ s{[/\\]}{::}g;
     $module =~ s/\.pm$//;
+    COMPILETESTS_SKIP;
     is( qx{ $^X -Ilib -M$module -e "print '$module ok'" }, "$module ok", "$module loaded ok" );
 }
     
