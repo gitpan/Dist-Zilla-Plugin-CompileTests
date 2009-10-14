@@ -10,7 +10,7 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '1.092840';
+our $VERSION = '1.092870';
 
 
 # ABSTRACT: common tests to check syntax of your modules
@@ -35,7 +35,7 @@ sub munge_file {
     return unless $file->name eq 't/00-compile.t';
 
     my $replacement = ( $self->has_skip && $self->skip )
-        ? sprintf( 'next if $module =~ /%s/;', $self->skip )
+        ? sprintf( 'return if $found =~ /%s/;', $self->skip )
         : '# nothing to skip';
 
     # replace the string in the file
@@ -61,7 +61,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.092840
+version 1.092870
 
 =begin Pod::Coverage
 
@@ -157,22 +157,22 @@ my @modules;
 find(
   sub {
     return if $File::Find::name !~ /\.pm\z/;
-    push @modules, $File::Find::name;
+    my $found = $File::Find::name;
+    $found =~ s{^lib/}{};
+    $found =~ s{[/\\]}{::}g;
+    $found =~ s/\.pm$//;
+    COMPILETESTS_SKIP
+    push @modules, $found;
   },
   'lib',
 );
+
 my @scripts = glob "bin/*";
 
 plan tests => scalar(@modules) + scalar(@scripts);
     
-foreach my $file ( @modules ) {
-    my $module = $file;
-    $module =~ s{^lib/}{};
-    $module =~ s{[/\\]}{::}g;
-    $module =~ s/\.pm$//;
-    COMPILETESTS_SKIP;
-    is( qx{ $^X -Ilib -M$module -e "print '$module ok'" }, "$module ok", "$module loaded ok" );
-}
+is( qx{ $^X -Ilib -M$_ -e "print '$_ ok'" }, "$_ ok", "$_ loaded ok" )
+    for sort @modules;
     
 SKIP: {
     eval "use Test::Script; 1;";

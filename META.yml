@@ -11,17 +11,16 @@ name: Dist-Zilla-Plugin-CompileTests
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 1.092840
+    version: 1.092870
 requires:
   Dist::Zilla::Plugin::InlineFiles: 0
   Dist::Zilla::Role::FileMunger: 0
   English: 0
   ExtUtils::MakeMaker: 0
   File::Find: 0
-  FileMunger: 0
   Moose: 0
   Test::More: 0
 resources:
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-CompileTests
   repository: http://github.com/jquelin/dist-zilla-plugin-compiletests
-version: 1.092840
+version: 1.092870
