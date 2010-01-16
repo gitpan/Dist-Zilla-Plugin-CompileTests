@@ -1,10 +1,11 @@
+Build.PL
 Changes
 LICENSE
 MANIFEST
 META.yml
-Makefile.PL
 README
 dist.ini
+examples/dist.ini
 lib/Dist/Zilla/Plugin/CompileTests.pm
 t/00-compile.t
 t/author-critic.t

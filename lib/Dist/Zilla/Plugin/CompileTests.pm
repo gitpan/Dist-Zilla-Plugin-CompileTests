@@ -6,13 +6,12 @@
 # This is free software; you can redistribute it and/or modify it under
 # the same terms as the Perl 5 programming language system itself.
 # 
+use 5.008;
 use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '1.092870';
-
-
+our $VERSION = '1.100160';
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
@@ -52,7 +51,6 @@ __PACKAGE__->meta->make_immutable;
 
 
 
-
 =pod
 
 =head1 NAME
@@ -61,13 +59,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.092870
-
-=begin Pod::Coverage
-
-munge_file
-
-=end Pod::Coverage
+version 1.100160
 
 =head1 SYNOPSIS
 
@@ -89,7 +81,7 @@ This test will find all modules and scripts in your dist, and try to
 compile them one by one. This means it's a bit slower than loading them
 all at once, but it will catch more errors.
 
-=back 
+=back
 
 This plugin accepts the following options:
 
@@ -99,7 +91,9 @@ This plugin accepts the following options:
 match is done against the module name (C<Foo::Bar>), not the file path
 (F<lib/Foo/Bar.pm>).
 
-=back 
+=back
+
+=for Pod::Coverage::TrustPod munge_file
 
 =head1 SEE ALSO
 
@@ -123,10 +117,7 @@ L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-CompileTests>
 
 L<http://github.com/jquelin/dist-zilla-plugin-compiletests.git>.
 
-=back 
-
-
-
+=back
 
 =head1 AUTHOR
 
@@ -139,8 +130,7 @@ This software is copyright (c) 2009 by Jerome Quelin.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut 
-
+=cut
 
 
 __DATA__
@@ -152,6 +142,7 @@ use warnings;
 
 use Test::More;
 use File::Find;
+use File::Temp qw{ tempdir };
 
 my @modules;
 find(
@@ -170,16 +161,21 @@ find(
 my @scripts = glob "bin/*";
 
 plan tests => scalar(@modules) + scalar(@scripts);
-    
-is( qx{ $^X -Ilib -M$_ -e "print '$_ ok'" }, "$_ ok", "$_ loaded ok" )
-    for sort @modules;
-    
-SKIP: {
-    eval "use Test::Script; 1;";
-    skip "Test::Script needed to test script compilation", scalar(@scripts) if $@;
-    foreach my $file ( @scripts ) {
-        my $script = $file;
-        $script =~ s!.*/!!;
-        script_compiles_ok( $file, "$script script compiles" );
+
+{
+    # fake home for cpan-testers
+    local $ENV{HOME} = tempdir( CLEANUP => 1 );
+
+    is( qx{ $^X -Ilib -M$_ -e "print '$_ ok'" }, "$_ ok", "$_ loaded ok" )
+        for sort @modules;
+
+    SKIP: {
+        eval "use Test::Script; 1;";
+        skip "Test::Script needed to test script compilation", scalar(@scripts) if $@;
+        foreach my $file ( @scripts ) {
+            my $script = $file;
+            $script =~ s!.*/!!;
+            script_compiles_ok( $file, "$script script compiles" );
+        }
     }
 }
