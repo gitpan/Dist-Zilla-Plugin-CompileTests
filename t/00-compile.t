@@ -35,7 +35,7 @@ plan tests => scalar(@modules) + scalar(@scripts);
 
 {
     # fake home for cpan-testers
-    local $ENV{HOME} = tempdir( CLEANUP => 1 );
+    # no fake requested ## local $ENV{HOME} = tempdir( CLEANUP => 1 );
 
     is( qx{ $^X -Ilib -M$_ -e "print '$_ ok'" }, "$_ ok", "$_ loaded ok" )
         for sort @modules;

@@ -6,7 +6,7 @@ build_requires:
   Module::Build: 0.3601
 configure_requires:
   Module::Build: 0.3601
-generated_by: 'Dist::Zilla version 1.100130'
+generated_by: 'Dist::Zilla version 1.100160'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -15,7 +15,7 @@ name: Dist-Zilla-Plugin-CompileTests
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 1.100160
+    version: 1.100220
 requires:
   Dist::Zilla::Plugin::InlineFiles: 0
   Dist::Zilla::Role::FileMunger: 0
@@ -29,4 +29,4 @@ requires:
 resources:
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-CompileTests
   repository: http://github.com/jquelin/dist-zilla-plugin-compiletests
-version: 1.100160
+version: 1.100220
