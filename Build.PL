@@ -6,23 +6,26 @@ use Module::Build 0.3601;
 
 my %module_build_args = (
                        'dist_abstract' => 'common tests to check syntax of your modules',
+                       'script_files' => [],
+                       'license' => 'perl',
+                       'build_requires' => {},
+                       'dist_name' => 'Dist-Zilla-Plugin-CompileTests',
                        'dist_author' => [
                                           'Jerome Quelin'
                                         ],
-                       'dist_name' => 'Dist-Zilla-Plugin-CompileTests',
-                       'script_files' => [],
                        'module_name' => 'Dist::Zilla::Plugin::CompileTests',
                        'requires' => {
-                                       'English' => 0,
+                                       'English' => '0',
                                        'perl' => '5.008',
-                                       'Test::More' => 0,
-                                       'Dist::Zilla::Role::FileMunger' => 0,
-                                       'File::Find' => 0,
-                                       'File::Temp' => 0,
-                                       'Moose' => 0,
-                                       'Dist::Zilla::Plugin::InlineFiles' => 0
+                                       'Test::More' => '0',
+                                       'Dist::Zilla::Role::FileMunger' => '0',
+                                       'File::Find' => '0',
+                                       'File::Temp' => '0',
+                                       'Dist::Zilla::Plugin::InlineFiles' => '0',
+                                       'Moose' => '0'
                                      },
-                       'license' => 'perl'
+                       'configure_requires' => {},
+                       'dist_version' => '1.100740'
                      );
 
 

@@ -11,7 +11,7 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '1.100220';
+our $VERSION = '1.100740';
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
@@ -64,15 +64,11 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.100220
-
-=for Pod::Coverage::TrustPod munge_file
+version 1.100740
 
 =head1 SYNOPSIS
 
-
 In your dist.ini:
-
 
     [CompileTests]
     skip      = Test$
@@ -80,76 +76,57 @@ In your dist.ini:
 
 =head1 DESCRIPTION
 
-
 This is an extension of L<Dist::Zilla::Plugin::InlineFiles>, providing
 the following files:
 
-
 =over 4
 
-
 =item * t/00-compile.t - a standard test to check syntax of bundled modules
-
 
 This test will find all modules and scripts in your dist, and try to
 compile them one by one. This means it's a bit slower than loading them
 all at once, but it will catch more errors.
 
-
 =back
-
 
 This plugin accepts the following options:
 
-
 =over 4
-
 
 =item * skip: a regex to skip compile test for modules matching it. The
 match is done against the module name (C<Foo::Bar>), not the file path
 (F<lib/Foo/Bar.pm>).
-
 
 =item * fake_home: a boolean to indicate whether to fake $ENV{HOME}.
 This may be needed if your module unilateraly creates stuff in homedir:
 indeed, some cpantesters will smoke test your dist with a read-only home
 directory. Default to false.
 
-
 =back
+
+=for Pod::Coverage::TrustPod munge_file
 
 =head1 SEE ALSO
 
-
 You can also look for information on this module at:
-
 
 =over 4
 
-
 =item * AnnoCPAN: Annotated CPAN documentation
-
 
 L<http://annocpan.org/dist/Dist-Zilla-Plugin-CompileTests>
 
-
 =item * CPAN Ratings
-
 
 L<http://cpanratings.perl.org/d/Dist-Zilla-Plugin-CompileTests>
 
-
 =item * Open bugs
-
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-CompileTests>
 
-
 =item * Git repository
 
-
 L<http://github.com/jquelin/dist-zilla-plugin-compiletests.git>.
-
 
 =back
 
@@ -200,7 +177,7 @@ plan tests => scalar(@modules) + scalar(@scripts);
     # fake home for cpan-testers
     COMPILETESTS_FAKE_HOME local $ENV{HOME} = tempdir( CLEANUP => 1 );
 
-    is( qx{ $^X -Ilib -M$_ -e "print '$_ ok'" }, "$_ ok", "$_ loaded ok" )
+    is( qx{ $^X -Ilib -e "use $_; print '$_ ok'" }, "$_ ok", "$_ loaded ok" )
         for sort @modules;
 
     SKIP: {
