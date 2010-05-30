@@ -11,7 +11,9 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
-our $VERSION = '1.100740';
+BEGIN {
+  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.101500';
+}
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
@@ -64,7 +66,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.100740
+version 1.101500
 
 =head1 SYNOPSIS
 
@@ -181,12 +183,12 @@ plan tests => scalar(@modules) + scalar(@scripts);
         for sort @modules;
 
     SKIP: {
-        eval "use Test::Script; 1;";
+        eval "use Test::Script 1.05; 1;";
         skip "Test::Script needed to test script compilation", scalar(@scripts) if $@;
         foreach my $file ( @scripts ) {
             my $script = $file;
             $script =~ s!.*/!!;
-            script_compiles_ok( $file, "$script script compiles" );
+            script_compiles( $file, "$script script compiles" );
         }
     }
 }
