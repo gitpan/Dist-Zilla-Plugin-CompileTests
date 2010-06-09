@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
 BEGIN {
-  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.101500';
+  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.101600';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -66,7 +66,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.101500
+version 1.101600
 
 =head1 SYNOPSIS
 
@@ -179,7 +179,7 @@ plan tests => scalar(@modules) + scalar(@scripts);
     # fake home for cpan-testers
     COMPILETESTS_FAKE_HOME local $ENV{HOME} = tempdir( CLEANUP => 1 );
 
-    is( qx{ $^X -Ilib -e "use $_; print '$_ ok'" }, "$_ ok", "$_ loaded ok" )
+    like( qx{ $^X -Ilib -e "use $_; print '$_ ok'" }, qr/^\s*$_ ok/s, "$_ loaded ok" )
         for sort @modules;
 
     SKIP: {
