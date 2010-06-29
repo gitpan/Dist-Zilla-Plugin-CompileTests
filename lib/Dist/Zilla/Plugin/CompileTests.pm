@@ -1,18 +1,18 @@
-# 
+#
 # This file is part of Dist-Zilla-Plugin-CompileTests
-# 
+#
 # This software is copyright (c) 2009 by Jerome Quelin.
-# 
+#
 # This is free software; you can redistribute it and/or modify it under
 # the same terms as the Perl 5 programming language system itself.
-# 
+#
 use 5.008;
 use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
 BEGIN {
-  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.101600';
+  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.101800';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -66,7 +66,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.101600
+version 1.101800
 
 =head1 SYNOPSIS
 
@@ -173,13 +173,14 @@ find(
 
 my @scripts = glob "bin/*";
 
-plan tests => scalar(@modules) + scalar(@scripts);
+my $plan = scalar(@modules) + scalar(@scripts);
+$plan ? (plan tests => $plan) : (plan skip_all => "no tests to run");
 
 {
     # fake home for cpan-testers
     COMPILETESTS_FAKE_HOME local $ENV{HOME} = tempdir( CLEANUP => 1 );
 
-    like( qx{ $^X -Ilib -e "use $_; print '$_ ok'" }, qr/^\s*$_ ok/s, "$_ loaded ok" )
+    like( qx{ $^X -Ilib -e "require $_; print '$_ ok'" }, qr/^\s*$_ ok/s, "$_ loaded ok" )
         for sort @modules;
 
     SKIP: {
