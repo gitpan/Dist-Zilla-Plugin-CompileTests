@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
 BEGIN {
-  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.101800';
+  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.103000';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -25,7 +25,7 @@ with    'Dist::Zilla::Role::FileMunger';
 
 has fake_home => ( is=>'ro', predicate=>'has_fake_home' );
 has skip      => ( is=>'ro', predicate=>'has_skip' ); # skiplist - a regex
-
+has no_display => ( is=>'ro', predicate=>'has_no_display' );
 
 # -- public methods
 
@@ -43,10 +43,15 @@ sub munge_file {
         ? ''
         : '# no fake requested ##';
 
+    my $no_display = ( $self->has_no_display && $self->no_display )
+        ? '1'
+        : '0';
+
     # replace strings in the file
     my $content = $file->content;
     $content =~ s/COMPILETESTS_SKIP/$skip/;
     $content =~ s/COMPILETESTS_FAKE_HOME/$home/;
+    $content =~ s/COMPILETESTS_NO_DISPLAY/$no_display/;
     $file->content( $content );
 }
 
@@ -66,7 +71,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.101800
+version 1.103000
 
 =head1 SYNOPSIS
 
@@ -75,6 +80,7 @@ In your dist.ini:
     [CompileTests]
     skip      = Test$
     fake_home = 1
+    no_display = 1
 
 =head1 DESCRIPTION
 
@@ -103,6 +109,9 @@ match is done against the module name (C<Foo::Bar>), not the file path
 This may be needed if your module unilateraly creates stuff in homedir:
 indeed, some cpantesters will smoke test your dist with a read-only home
 directory. Default to false.
+
+=item * no_display: a boolean to indicate whether to skip the compile test
+on non-win32 systems when $ENV{DISPLAY} is not set. Default to false.
 
 =back
 
@@ -134,7 +143,7 @@ L<http://github.com/jquelin/dist-zilla-plugin-compiletests.git>.
 
 =head1 AUTHOR
 
-  Jerome Quelin
+Jerome Quelin
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -154,6 +163,14 @@ use strict;
 use warnings;
 
 use Test::More;
+
+BEGIN {
+    if ( COMPILETESTS_NO_DISPLAY and not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
+        plan skip_all => 'Needs DISPLAY';
+        exit 0;
+    }
+}
+
 use File::Find;
 use File::Temp qw{ tempdir };
 
