@@ -13,7 +13,8 @@ my %module_build_args = (
     'File::Temp' => '0',
     'Module::Build' => '0.3601',
     'Scalar::Util' => '0',
-    'Test::More' => '0.94'
+    'Test::More' => '0.94',
+    'Test::NeedsDisplay' => '0'
   },
   'configure_requires' => {
     'Module::Build' => '0.3601'
@@ -23,7 +24,7 @@ my %module_build_args = (
     'Jerome Quelin'
   ],
   'dist_name' => 'Dist-Zilla-Plugin-CompileTests',
-  'dist_version' => '1.103000',
+  'dist_version' => '1.103010',
   'license' => 'perl',
   'module_name' => 'Dist::Zilla::Plugin::CompileTests',
   'recommends' => {},
