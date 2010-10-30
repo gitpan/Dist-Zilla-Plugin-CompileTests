@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
 BEGIN {
-  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.103010';
+  $Dist::Zilla::Plugin::CompileTests::VERSION = '1.103030';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -43,10 +43,18 @@ sub munge_file {
         ? ''
         : '# no fake requested ##';
 
-    my $needs_display =
-        $self->has_needs_display && $self->needs_display
-        ? q{use Test::NeedsDisplay ':skip_all'}
-        : '';
+    # Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
+    my $needs_display = '';
+    if ( $self->has_needs_display && $self->needs_display ) {
+        $needs_display = <<'CODE';
+BEGIN {
+    if( not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
+        plan skip_all => 'Needs DISPLAY';
+        exit 0;
+    }
+}
+CODE
+    }
 
     # replace strings in the file
     my $content = $file->content;
@@ -72,7 +80,7 @@ Dist::Zilla::Plugin::CompileTests - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 1.103010
+version 1.103030
 
 =head1 SYNOPSIS
 
@@ -165,8 +173,9 @@ ___[ t/00-compile.t ]___
 use strict;
 use warnings;
 
-COMPILETESTS_NEEDS_DISPLAY;
 use Test::More;
+
+COMPILETESTS_NEEDS_DISPLAY
 
 use File::Find;
 use File::Temp qw{ tempdir };

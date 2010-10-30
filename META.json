@@ -39,15 +39,14 @@
             "File::Find" : 0,
             "File::Temp" : 0,
             "Scalar::Util" : 0,
-            "Test::More" : "0.94",
-            "Test::NeedsDisplay" : 0
+            "Test::More" : "0.94"
          }
       }
    },
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "1.103010"
+         "version" : "1.103030"
       }
    },
    "release_status" : "stable",
@@ -61,23 +60,12 @@
          "url" : "http://github.com/jquelin/dist-zilla-plugin-compiletests"
       }
    },
-   "version" : "1.103010",
+   "version" : "1.103030",
    "x_Dist_Zilla" : {
       "plugins" : [
          {
             "class" : "Dist::Zilla::Plugin::MetaResources",
             "name" : "MetaResources",
-            "version" : "4.102340"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Prereqs",
-            "config" : {
-               "Dist::Zilla::Plugin::Prereqs" : {
-                  "phase" : "test",
-                  "type" : "requires"
-               }
-            },
-            "name" : "TestRequires",
             "version" : "4.102340"
          },
          {

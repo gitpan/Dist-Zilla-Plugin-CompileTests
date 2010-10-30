@@ -10,7 +10,6 @@ build_requires:
   Module::Build: 0.3601
   Scalar::Util: 0
   Test::More: 0.94
-  Test::NeedsDisplay: 0
 configure_requires:
   Module::Build: 0.3601
 dynamic_config: 0
@@ -23,7 +22,7 @@ name: Dist-Zilla-Plugin-CompileTests
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 1.103010
+    version: 1.103030
 requires:
   Dist::Zilla::Plugin::InlineFiles: 0
   Dist::Zilla::Role::FileMunger: 0
@@ -33,20 +32,12 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-CompileTests
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-CompileTests/
   repository: http://github.com/jquelin/dist-zilla-plugin-compiletests
-version: 1.103010
+version: 1.103030
 x_Dist_Zilla:
   plugins:
     -
       class: Dist::Zilla::Plugin::MetaResources
       name: MetaResources
-      version: 4.102340
-    -
-      class: Dist::Zilla::Plugin::Prereqs
-      config:
-        Dist::Zilla::Plugin::Prereqs:
-          phase: test
-          type: requires
-      name: TestRequires
       version: 4.102340
     -
       class: Dist::Zilla::Plugin::AutoVersion
