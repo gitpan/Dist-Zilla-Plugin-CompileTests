@@ -7,13 +7,10 @@ use Module::Build 0.3601;
 
 my %module_build_args = (
   'build_requires' => {
-    'Carp' => '0',
-    'English' => '0',
     'File::Find' => '0',
     'File::Temp' => '0',
     'Module::Build' => '0.3601',
-    'Scalar::Util' => '0',
-    'Test::More' => '0.94'
+    'Test::More' => '0.88'
   },
   'configure_requires' => {
     'Module::Build' => '0.3601'
@@ -23,7 +20,7 @@ my %module_build_args = (
     'Jerome Quelin'
   ],
   'dist_name' => 'Dist-Zilla-Plugin-CompileTests',
-  'dist_version' => '1.103030',
+  'dist_version' => '1.110870',
   'license' => 'perl',
   'module_name' => 'Dist::Zilla::Plugin::CompileTests',
   'recommends' => {},
